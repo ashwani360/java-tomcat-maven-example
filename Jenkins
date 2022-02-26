@@ -1,0 +1,26 @@
+node{/* In this Stage the Code will get cloned from remote repository */
+
+stage('Preparation')
+{
+git branch:'master',url:'https://github.com/ashwani360/java-tomcat-maven-example.git'
+}
+/* In this Stage Project will packaged as war file */
+stage('Package')
+{
+
+/*sh "mvn clean package"*/
+bat "mvn clean package"
+
+}
+
+/* In this stage War file get copied on Master node in folder - Latest build file */
+stage('Copy to Central location')
+{
+
+/*sh "cp ${currentBuild.number}/"*/
+echo "java-tomcat-maven-example_v_${env.BUILD_NUMBER}.war"
+
+
+bat """ copy target\\java-tomcat-maven-example.war D:\\Artifacts\\java-tomcat-maven-example_v_${env.BUILD_NUMBER}.war"  """
+}
+}
